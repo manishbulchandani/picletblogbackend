@@ -54,7 +54,7 @@ app.get('/getTodaysPick', async (req, res) => {
         const existingDocument = await collection.findOne({}, { sort: { clickCount: 1 } });
 
         if (existingDocument) {
-            res.status(200).json({ maxClicksPostId: existingDocument });
+            res.status(200).json({ maxClicksPostId: existingDocument.slug });
         } else {
             res.status(404).json({ message: "No popular posts found" });
         }
