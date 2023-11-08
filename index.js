@@ -16,7 +16,11 @@ const client = new MongoClient(url);
 
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://piclettest.netlify.app , https://piclet.in");
+    const allowedOrigins = ['https://piclettest.netlify.app', 'https://piclet.in'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
