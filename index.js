@@ -16,7 +16,7 @@ const client = new MongoClient(url);
 
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://piclettest.netlify.app"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "https://piclettest.netlify.app/ , https://piclet.in/"); 
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
@@ -51,7 +51,7 @@ app.post('/trackPostClicks', async (req, res) => {
 
 app.get('/getTodaysPick', async (req, res) => {
     try {
-        const existingDocument = await collection.findOne({}, { sort: { clickCount: 1 } });
+        const existingDocument = await collection.findOne({}, { sort: { clickCount: -1 } });
 
         if (existingDocument) {
             res.status(200).json({ maxClicksPostId: existingDocument.slug });
@@ -66,7 +66,7 @@ app.get('/getTodaysPick', async (req, res) => {
 
 moment.tz.setDefault('Asia/Kolkata');
 
-cron.schedule('59 23 * * *', async () => {
+cron.schedule('44 1- * * *', async () => {
     try {
         await collection.updateMany({}, { $set: { clickCount: 0 } });
         console.log("Click counts reset successfully.");
