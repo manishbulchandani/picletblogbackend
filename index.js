@@ -15,12 +15,12 @@ const url = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB
 const client = new MongoClient(url);
 
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://piclettest.netlify.app/ , https://piclet.in/"); 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://piclettest.netlify.app/ , https://piclet.in/");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-  
+
 
 async function run() {
     try {
@@ -39,11 +39,12 @@ app.post('/trackPostClicks', async (req, res) => {
     const { slug } = req.body;
 
     const existingDocument = await collection.findOne({ slug });
-
-    if (existingDocument) {
-        await collection.updateOne({ slug }, { $inc: { clickCount: 1 } });
-    } else {
-        await collection.insertOne({ slug, clickCount: 1 });
+    if (slug) {
+        if (existingDocument) {
+            await collection.updateOne({ slug }, { $inc: { clickCount: 1 } });
+        } else {
+            await collection.insertOne({ slug, clickCount: 1 });
+        }
     }
 
     res.status(200).json({ message: 'Click tracked successfully' });
