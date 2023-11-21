@@ -60,7 +60,7 @@ app.get('/getTodaysPick', async (req, res) => {
         const dateDocument = await dateCollection.findOne();
         const lastResetDate = moment(dateDocument.lastResetDate);
 
-        if (today.diff(lastResetDate, 'days') > 5) {
+        if (today.diff(lastResetDate, 'days') > 7) {
             const prevPopularPost = await clicksCollection.findOne({}, { sort: { clickCount: -1 } });
 
             await clicksCollection.updateMany({}, { $set: { clickCount: 0 } });
